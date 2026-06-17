@@ -1,28 +1,21 @@
-import tseslint from '@typescript-eslint/eslint-plugin';
-import tsparser from '@typescript-eslint/parser';
+const { FlatCompat } = require('@eslint/eslintrc')
+const path = require('path')
 
-export default [
+const compat = new FlatCompat({
+  baseDirectory: __dirname
+})
+
+module.exports = [
+  ...compat.extends('eslint:recommended', 'plugin:@typescript-eslint/recommended'),
   {
-    ignores: ['node_modules/**', 'dist/**', '.next/**', 'coverage/**'],
+    ignores: ['node_modules/**', '.next/**', 'dist/**', 'coverage/**']
   },
   {
-    files: ['**/*.ts', '**/*.tsx'],
-    languageOptions: {
-      parser: tsparser,
-      ecmaVersion: 2020,
-      sourceType: 'module',
-      parserOptions: {
-        project: './tsconfig.json',
-      },
-    },
-    plugins: {
-      '@typescript-eslint': tseslint,
-    },
     rules: {
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
-    },
-  },
-];
+      '@typescript-eslint/no-explicit-any': 'warn'
+    }
+  }
+]

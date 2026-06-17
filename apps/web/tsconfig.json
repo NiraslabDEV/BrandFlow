@@ -3,6 +3,15 @@
   "compilerOptions": {
     "jsx": "preserve",
     "incremental": true,
+    "rootDir": ".",
+    "outDir": ".next/tsc-out",
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
     "plugins": [
       {
         "name": "next"
