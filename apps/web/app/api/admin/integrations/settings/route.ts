@@ -17,7 +17,7 @@ const SECRET_FIELDS = [
   'resend_api_key', 'meta_capi_token', 'gads_developer_token',
 ] as const
 
-async function assertSuperAdmin(request: NextRequest): Promise<boolean> {
+async function assertSuperAdmin(_request: NextRequest): Promise<boolean> {
   const cookieStore = cookies()
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

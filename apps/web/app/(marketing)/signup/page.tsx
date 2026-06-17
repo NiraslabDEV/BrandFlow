@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
+import { trackSignUp } from '@/lib/analytics/track'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -49,7 +50,10 @@ export default function SignupPage() {
         throw new Error(data.error || 'Falha ao criar tenant')
       }
 
-      // 3. Redirecionar para dashboard
+      // 3. Dispara evento sign_up
+      trackSignUp(user.id)
+
+      // 4. Redirecionar para dashboard
       router.push('/app/dashboard')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro desconhecido')
