@@ -1,10 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
-import { PaymentProvider } from './provider';
+import { PaymentProvider, PaymentKind } from './provider';
 import { ZumboPayProvider } from './zumbopay';
 import { PaysuiteProvider } from './paysuite';
 import { MockPaymentProvider } from './mock';
 
-export type PaymentKind = 'subscription' | 'credits';
+export type { PaymentKind };
 
 /**
  * Fábrica de providers de pagamento
@@ -26,7 +26,7 @@ export async function getProvider(kind: PaymentKind): Promise<PaymentProvider> {
   // Lê platform_settings (singleton, id=1)
   const { data: settings, error } = await supabase
     .from('platform_settings')
-    .select(kind === 'subscription' ? 'subscription_provider' : 'credits_provider')
+    .select('subscription_provider, credits_provider')
     .eq('id', 1)
     .single();
 

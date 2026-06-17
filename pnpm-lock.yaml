@@ -199,6 +199,9 @@ importers:
       '@brandflow/core':
         specifier: workspace:*
         version: link:../core
+      '@supabase/supabase-js':
+        specifier: ^2.108.2
+        version: 2.108.2
     devDependencies:
       '@brandflow/eslint-config':
         specifier: workspace:*
@@ -206,6 +209,9 @@ importers:
       '@brandflow/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^2.1.9
         version: 2.1.9(vitest@2.1.9(@types/node@20.19.43))
