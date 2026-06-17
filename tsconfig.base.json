@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/tsconfig" },
+    { "path": "./packages/eslint-config" },
+    { "path": "./packages/core" },
+    { "path": "./packages/db" },
+    { "path": "./packages/payments" },
+    { "path": "./packages/ai" },
+    { "path": "./packages/notifications" },
+    { "path": "./services/worker" },
+    { "path": "./apps/web" }
+  ]
+}

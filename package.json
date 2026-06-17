@@ -1,0 +1,42 @@
+{
+  "name": "brandflow-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "pnpm --filter web start",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "echo TODO: playwright",
+    "lint": "echo TODO: lint - skipping for monorepo skeleton",
+    "db:migrate": "echo TODO: supabase db reset",
+    "db:types": "echo TODO: supabase gen types typescript --local > packages/db/src/types.ts",
+    "db:seed": "echo TODO: supabase db reset",
+    "worker:dev": "pnpm --filter worker run dev",
+    "cron:local": "echo TODO: crons localmente",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.45.0",
+    "@typescript-eslint/eslint-plugin": "^8.61.0",
+    "@typescript-eslint/parser": "^8.61.0",
+    "@vitest/coverage-v8": "^2.1.9",
+    "turbo": "^2.0.0",
+    "vitest": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "pnpm": {
+    "neverBuiltDependencies": [
+      "canvas"
+    ]
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "services/*"
+  ]
+}

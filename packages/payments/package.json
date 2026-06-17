@@ -1,0 +1,25 @@
+{
+  "name": "@brandflow/payments",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run src/__tests__"
+  },
+  "dependencies": {
+    "@brandflow/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@brandflow/eslint-config": "workspace:*",
+    "@brandflow/tsconfig": "workspace:*",
+    "@vitest/coverage-v8": "^2.1.9",
+    "typescript": "^5.0.0",
+    "vitest": "^2.0.0"
+  }
+}

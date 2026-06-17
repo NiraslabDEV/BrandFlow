@@ -1,0 +1,23 @@
+{
+  "name": "@brandflow/worker",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run src/__tests__"
+  },
+  "dependencies": {
+    "@brandflow/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@brandflow/eslint-config": "workspace:*",
+    "@brandflow/tsconfig": "workspace:*",
+    "@vitest/coverage-v8": "^2.1.9",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^2.0.0"
+  }
+}

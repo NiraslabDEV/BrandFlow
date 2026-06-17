@@ -1,0 +1,7 @@
+{
+  "name": "@brandflow/tsconfig",
+  "version": "0.0.0",
+  "private": true,
+  "main": "tsconfig.json",
+  "files": ["tsconfig.json"]
+}
