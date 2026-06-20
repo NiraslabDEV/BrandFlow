@@ -16,8 +16,8 @@ self.addEventListener('push', (event) => {
     body: data.body || '',
     tag: data.data && data.data.story_task_id ? `story-${data.data.story_task_id}` : undefined,
     data: { url: data.url || '/stories' },
-    icon: '/icons/icon-192.png',
-    badge: '/icons/icon-192.png',
+    icon: '/icons/icon.svg',
+    badge: '/icons/icon.svg',
   };
   event.waitUntil(self.registration.showNotification(title, options));
 });

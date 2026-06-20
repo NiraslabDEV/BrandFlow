@@ -7,7 +7,7 @@
 Legenda: 🔴 bloqueia tudo · 🟡 bloqueia a entrega ao 1º cliente · 🟢 melhoria
 DoD: `[x]` feito (código + gate/commit) · `[x] ⏳` código pronto, falta confirmar em runtime com Supabase local · `[ ]` por fazer
 
-> **Estado atual (2026-06-17): repo ainda não iniciado.** Próximo passo: **FASE M0.1** (esqueleto do monorepo).
+> **Estado atual (2026-06-20): M0 e M1 concluídas (Checkpoints 1 e 2).** Gate real (`pnpm lint && pnpm test` = 71 verdes). Próximo passo: **FASE M2.1** (calendário sazonal + campanhas).
 > Decisões fechadas do MVP: **multi-tenant SaaS** (planos/créditos com gating); stack **Next.js + Supabase**; alertas como
 > **notificação no celular via Web Push (PWA)** + email semanal; **Estúdio de IA** (Z.ai + Higgsfield) **incluído**;
 > **dois gateways de pagamento selecionáveis no painel** — **ZumboPay (recorrência)** + **Paysuite (avulso/créditos)**;

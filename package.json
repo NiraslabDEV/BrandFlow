@@ -10,10 +10,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "echo TODO: playwright",
-    "lint": "echo TODO: lint - skipping for monorepo skeleton",
-    "db:migrate": "echo TODO: supabase db reset",
-    "db:types": "echo TODO: supabase gen types typescript --local > packages/db/src/types.ts",
-    "db:seed": "echo TODO: supabase db reset",
+    "lint": "eslint .",
+    "db:migrate": "supabase db reset",
+    "db:types": "supabase gen types typescript --local > packages/db/src/types.ts",
+    "db:seed": "supabase db reset",
     "worker:dev": "pnpm --filter worker run dev",
     "cron:local": "node scripts/cron-local.mjs",
     "clean": "turbo run clean && rm -rf node_modules"
@@ -23,6 +23,7 @@
     "@typescript-eslint/eslint-plugin": "^8.61.0",
     "@typescript-eslint/parser": "^8.61.0",
     "@vitest/coverage-v8": "^2.1.9",
+    "eslint": "^9.0.0",
     "turbo": "^2.0.0",
     "vitest": "^2.0.0"
   },
