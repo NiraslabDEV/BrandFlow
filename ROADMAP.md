@@ -110,10 +110,10 @@ Integrações para colar tags e chaves; e o funil (landing→signup) já é medi
 > Lê o `CLAUDE.md` (secções 6, 6.3, 16.6 + decisões 1.2.2/1.2.3). PWA: `manifest.json` + `public/sw.js` (`push`/`notificationclick`). `packages/notifications/src/web-push.ts` (lib `web-push` + VAPID) — único a enviar push. Migration `0005`: `push_subscriptions` (escopo de **tenant**, `user_id` null, `label` do aparelho — **equipa sem login**, 1.2.2) + `notifications` como **outbox** (`attempts`, `next_attempt_at`, `dedupe_key`). Rota `POST /api/push/subscribe`. **Dispatch em 2 passos (outbox, 1.2.3):** `POST /api/cron/dispatch-stories` (`CRON_SECRET`, pg_cron horário) só **enfileira** `notifications` (`queued`) para as `story_tasks` vencidas, com `dedupe_key=task_id` (idempotente); um processador (`POST /api/cron/flush-notifications`) envia os `queued` a todas as subscriptions do tenant com backoff, marca `sent`/`failed`, e apaga subscription em 404/410. `pnpm cron:local`. Testes: dispatch só enfileira vencidas; `dedupe_key` impede duplicado; falha de envio → retry, nunca trava; subscription morta removida.
 
 **DoD:**
-- [ ] Aceitar notificações no celular → subscription (escopo tenant) gravada; push de teste chega como notificação de sistema
-- [ ] ⏳ `dispatch-stories` enfileira só as vencidas (idempotente por `dedupe_key`); `flush` envia com retry
-- [ ] Falha de push → `attempts`++/`failed` (reentregável), nunca trava o cron; subscription 404/410 apagada
-- [ ] Commit `feat(notifications): web push + outbox dispatch (tenant-scoped, retry)`
+- [x] ⏳ Aceitar notificações no celular → subscription (escopo tenant) gravada; push de teste chega como notificação de sistema (PWA `sw.js`+`manifest.json`, opt-in no Dashboard, `POST /api/push/subscribe`; entrega no aparelho = verificação manual)
+- [x] `dispatch-stories` enfileira só as vencidas (idempotente por `dedupe_key`, verificado em runtime contra Supabase); `flush` envia com retry (lógica testada via mock transport)
+- [x] Falha de push → `attempts`++/`failed` (reentregável), nunca trava o cron; subscription 404/410 apagada (testado: backoff + gone-handling)
+- [x] Commit `feat(notifications): web push + outbox dispatch (tenant-scoped, retry)`
 
 ### M1.3 🟡 Painel: Dashboard + Stories do dia + marcar "Feito"
 

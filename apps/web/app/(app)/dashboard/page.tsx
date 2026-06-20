@@ -2,6 +2,7 @@
 // Será implementado em fases posteriores
 
 import { currentTenant } from '@/lib/tenant'
+import { PushOptIn } from '@/components/push-optin'
 
 export default async function DashboardPage() {
   const tenant = await currentTenant()
@@ -36,6 +37,10 @@ export default async function DashboardPage() {
             <div className="text-gray-600 mt-1">Créditos disponíveis</div>
           </div>
         </div>
+      </div>
+
+      <div className="mt-6 max-w-md">
+        <PushOptIn />
       </div>
     </div>
   )

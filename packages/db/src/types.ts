@@ -160,6 +160,62 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          attempts: number
+          body: string
+          channel: string
+          created_at: string
+          dedupe_key: string | null
+          error: string | null
+          id: string
+          next_attempt_at: string
+          payload: Json
+          sent_at: string | null
+          status: string
+          tenant_id: string
+          title: string
+        }
+        Insert: {
+          attempts?: number
+          body: string
+          channel: string
+          created_at?: string
+          dedupe_key?: string | null
+          error?: string | null
+          id?: string
+          next_attempt_at?: string
+          payload?: Json
+          sent_at?: string | null
+          status?: string
+          tenant_id: string
+          title: string
+        }
+        Update: {
+          attempts?: number
+          body?: string
+          channel?: string
+          created_at?: string
+          dedupe_key?: string | null
+          error?: string | null
+          id?: string
+          next_attempt_at?: string
+          payload?: Json
+          sent_at?: string | null
+          status?: string
+          tenant_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       platform_settings: {
         Row: {
           credits_provider: string
@@ -222,6 +278,44 @@ export type Database = {
           zumbopay_webhook_secret?: string | null
         }
         Relationships: []
+      }
+      push_subscriptions: {
+        Row: {
+          created_at: string
+          endpoint: string
+          id: string
+          keys: Json
+          label: string | null
+          tenant_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          endpoint: string
+          id?: string
+          keys: Json
+          label?: string | null
+          tenant_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          endpoint?: string
+          id?: string
+          keys?: Json
+          label?: string | null
+          tenant_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "push_subscriptions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       restaurants: {
         Row: {
@@ -384,9 +478,37 @@ export type Database = {
     }
     Functions: {
       auth_tenant_ids: { Args: never; Returns: string[] }
+      claim_due_notifications: {
+        Args: { p_limit?: number; p_now?: string }
+        Returns: {
+          attempts: number
+          body: string
+          channel: string
+          created_at: string
+          dedupe_key: string | null
+          error: string | null
+          id: string
+          next_attempt_at: string
+          payload: Json
+          sent_at: string | null
+          status: string
+          tenant_id: string
+          title: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "notifications"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       create_tenant: {
         Args: { p_name: string; p_user_id: string }
         Returns: string
+      }
+      enqueue_due_story_notifications: {
+        Args: { p_now?: string }
+        Returns: number
       }
       get_public_tracking: { Args: never; Returns: Json }
       materialize_story_tasks: {

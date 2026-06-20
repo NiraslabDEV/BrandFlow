@@ -15,7 +15,7 @@
     "db:types": "echo TODO: supabase gen types typescript --local > packages/db/src/types.ts",
     "db:seed": "echo TODO: supabase db reset",
     "worker:dev": "pnpm --filter worker run dev",
-    "cron:local": "echo TODO: crons localmente",
+    "cron:local": "node scripts/cron-local.mjs",
     "clean": "turbo run clean && rm -rf node_modules"
   },
   "devDependencies": {
