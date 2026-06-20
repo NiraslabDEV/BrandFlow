@@ -99,10 +99,10 @@ Integrações para colar tags e chaves; e o funil (landing→signup) já é medi
 > Lê o `CLAUDE.md` (secção 5). Cria `packages/core/src/story-matrix.ts`: constante tipada com os 9 slots fixos (15h→23h) e a rotação de 4 semanas (S1 operação; S2 Pessoas; S3 Autoridade; S4 Conversão), cada slot×tema → `{ title, instructions }` ricos (nunca "faz story agora"). Função pura `generateStoryTasks(restaurant, fromDate, days)` com `scheduled_for` em UTC derivado de `timezone`/`open_hour`/`close_hour`. Migration `0004_stories.sql` (`story_tasks`, RLS 16.1) + RPC `materialize_story_tasks(p_days)` idempotente (não duplica slot/dia). Testes: estrutura fixa nos 9 slots; semana 2 ≠ semana 1; fuso correto; materializar 2× não duplica.
 
 **DoD:**
-- [ ] Matriz cobre 9 slots × 7 dias × 4 semanas sem repetir tema (teste verde)
-- [ ] `generateStoryTasks` calcula `scheduled_for` correto para `Africa/Maputo`
-- [ ] ⏳ `materialize_story_tasks` idempotente
-- [ ] Commit `feat(core): story matrix engine + task materialization`
+- [x] Matriz cobre 9 slots × 7 dias × 4 semanas sem repetir tema (teste verde)
+- [x] `generateStoryTasks` calcula `scheduled_for` correto para `Africa/Maputo`
+- [x] `materialize_story_tasks` idempotente (verificado em runtime contra Supabase local; conteúdo rico vem do motor TS, fonte única — RPC não duplica a matriz)
+- [x] Commit `feat(core): story matrix engine + task materialization`
 
 ### M1.2 🔴 Web Push (PWA) + dispatch via cron
 

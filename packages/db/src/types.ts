@@ -1,4 +1,3 @@
-Connecting to db 5432
 export type Json =
   | string
   | number
@@ -95,6 +94,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      marketing_events: {
+        Row: {
+          created_at: string
+          id: number
+          payload: Json | null
+          session_id: string
+          tenant_id: string | null
+          type: string
+          utm: Json | null
+          value_cents: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          payload?: Json | null
+          session_id: string
+          tenant_id?: string | null
+          type: string
+          utm?: Json | null
+          value_cents?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          payload?: Json | null
+          session_id?: string
+          tenant_id?: string | null
+          type?: string
+          utm?: Json | null
+          value_cents?: number | null
+        }
+        Relationships: []
       }
       memberships: {
         Row: {
@@ -244,6 +276,72 @@ export type Database = {
           },
         ]
       }
+      story_tasks: {
+        Row: {
+          created_at: string
+          done_at: string | null
+          hour: number
+          id: string
+          instructions: string
+          restaurant_id: string
+          scheduled_for: string
+          sent_at: string | null
+          status: string
+          tenant_id: string
+          theme: string
+          title: string
+          week_of_month: number
+          weekday: number
+        }
+        Insert: {
+          created_at?: string
+          done_at?: string | null
+          hour: number
+          id?: string
+          instructions: string
+          restaurant_id: string
+          scheduled_for: string
+          sent_at?: string | null
+          status?: string
+          tenant_id: string
+          theme: string
+          title: string
+          week_of_month: number
+          weekday: number
+        }
+        Update: {
+          created_at?: string
+          done_at?: string | null
+          hour?: number
+          id?: string
+          instructions?: string
+          restaurant_id?: string
+          scheduled_for?: string
+          sent_at?: string | null
+          status?: string
+          tenant_id?: string
+          theme?: string
+          title?: string
+          week_of_month?: number
+          weekday?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "story_tasks_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "story_tasks_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tenants: {
         Row: {
           created_at: string
@@ -288,6 +386,19 @@ export type Database = {
       auth_tenant_ids: { Args: never; Returns: string[] }
       create_tenant: {
         Args: { p_name: string; p_user_id: string }
+        Returns: string
+      }
+      get_public_tracking: { Args: never; Returns: Json }
+      materialize_story_tasks: {
+        Args: { p_restaurant_id: string; p_tasks: Json }
+        Returns: number
+      }
+      vault_decrypt: {
+        Args: { p_encrypted: string; p_secret_id: string }
+        Returns: string
+      }
+      vault_encrypt: {
+        Args: { p_secret_id: string; p_value: string }
         Returns: string
       }
     }
@@ -426,5 +537,3 @@ export const Constants = {
   },
 } as const
 
-A new version of Supabase CLI is available: v2.107.0 (currently installed v2.105.0)
-We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli
