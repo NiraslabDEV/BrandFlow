@@ -15,6 +15,7 @@
   "devDependencies": {
     "@brandflow/eslint-config": "workspace:*",
     "@brandflow/tsconfig": "workspace:*",
+    "@types/node": "^20",
     "@vitest/coverage-v8": "^2.1.9",
     "tsx": "^4.0.0",
     "typescript": "^5.0.0",

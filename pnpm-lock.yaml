@@ -255,6 +255,9 @@ importers:
       '@brandflow/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
+      '@types/node':
+        specifier: ^20
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^2.1.9
         version: 2.1.9(vitest@2.1.9(@types/node@20.19.43))
