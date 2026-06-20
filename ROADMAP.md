@@ -34,10 +34,10 @@ Integrações para colar tags e chaves; e o funil (landing→signup) já é medi
 > Lê o `CLAUDE.md` (secções 2, 3, 15, ⚡). Cria o esqueleto: pnpm workspaces + Turborepo com `apps/web` (Next.js 14 App Router + TS + Tailwind + shadcn/ui), `packages/core`, `packages/db`, `packages/payments`, `packages/ai`, `packages/notifications`, `services/worker`, e `config/brand.ts` (marca do produto). **Porta do QR MESAS** (`C:\Users\Gabriel\Desktop\QR MESAS`): `packages/core/src/money.ts` (intacto); o provider Paysuite vira **uma implementação** de `packages/payments` atrás da interface `PaymentProvider` (CLAUDE.md 9.1), ao lado de stubs `zumbopay.ts` e `mock.ts`. **NÃO** portar lógica single-tenant nem `order-machine.ts`. Configura Vitest, ESLint, tsconfig partilhado e os scripts da secção 12 (os que ainda não funcionam → `echo TODO`). 1 teste trivial por package.
 
 **DoD:**
-- [ ] `pnpm install && pnpm lint && pnpm test && pnpm dev` funcionam (lint/test/build verdes)
-- [ ] `apps/web` abre com o tema do BrandFlow
-- [ ] `money.ts` portado; `packages/payments` com interface única + `paysuite`/`zumbopay`/`mock` (stubs), teste do mock verde
-- [ ] Commit `chore: monorepo skeleton + payments abstraction (money/paysuite/zumbopay/mock)`
+- [x] `pnpm install && pnpm lint && pnpm test && pnpm dev` funcionam (lint/test/build verdes)
+- [x] `apps/web` abre com o tema do BrandFlow
+- [x] `money.ts` portado; `packages/payments` com interface única + `paysuite`/`zumbopay`/`mock` (stubs), teste do mock verde
+- [x] Commit `chore: monorepo skeleton + payments abstraction (money/paysuite/zumbopay/mock)`
 
 ### M0.2 🔴 Banco multi-tenant + RLS + platform_settings
 
@@ -45,12 +45,12 @@ Integrações para colar tags e chaves; e o funil (landing→signup) já é medi
 > Lê o `CLAUDE.md` (secções 1.2, 4, 14, 16.1). Cria `packages/db/migrations/0001_core.sql`: tabelas `tenants`, `memberships`, `restaurants`, `credit_wallets`, `platform_settings` (singleton só super-admin), `event_log` (DDL da secção 4) + helper `auth_tenant_ids()`. **Decisões fundadoras já no schema:** `deleted_at` (soft-delete) em `tenants`/`restaurants`, `tenants.grace_until`, billing por `tenant`. RLS em TODAS (template 16.1 — `anon` sem policy; `platform_settings` escrita só super-admin). RPC `SECURITY DEFINER` `create_tenant(p_name)` que cria atomicamente `tenant`(trial)+`membership`(owner)+`restaurant`+`credit_wallet`(0). Seed mínimo (1 tenant demo + `platform_settings` vazio). `tests/rls.test.ts`: (a) anon não lê nada; (b) tenant A não vê tenant B; (c) `create_tenant` cria as 4 linhas atomicamente; (d) tenant comum não lê `platform_settings`.
 
 **DoD:**
-- [ ] ⏳ `supabase db reset` aplica migration + seed
-- [ ] ⏳ Isolamento: tenant A não lê tenant B; tenant não lê `platform_settings` — requer `supabase start`
-- [ ] ⏳ `create_tenant` atómico (tenant+membership+restaurant+wallet)
-- [ ] Soft-delete (`deleted_at`) nas entidades-chave; billing/créditos ancorados no `tenant`
-- [ ] `pnpm db:types` gera tipos
-- [ ] Commit `feat(db): multi-tenant core + platform_settings + RLS isolation`
+- [x] ⏳ `supabase db reset` aplica migration + seed
+- [x] ⏳ Isolamento: tenant A não lê tenant B; tenant não lê `platform_settings` — requer `supabase start`
+- [x] ⏳ `create_tenant` atómico (tenant+membership+restaurant+wallet)
+- [x] Soft-delete (`deleted_at`) nas entidades-chave; billing/créditos ancorados no `tenant`
+- [x] `pnpm db:types` gera tipos
+- [x] Commit `feat(db): multi-tenant core + platform_settings + RLS isolation`
 
 ### M0.3 🔴 Auth + signup + onboarding do tenant
 
@@ -58,10 +58,10 @@ Integrações para colar tags e chaves; e o funil (landing→signup) já é medi
 > Lê o `CLAUDE.md` (secções 10, 17). Supabase Auth: `/signup` e `/login` (anon, na `(marketing)`). Ao registar → `create_tenant` → painel `(app)`. Helper `currentTenant()` (tenant da sessão, **nunca** do client). Shell do painel com as tabs (**Dashboard · Stories · Calendário · Campanhas · Estúdio IA · Créditos · Definições**) — só **Dashboard** (vazio) e **Definições** (nome/marca do restaurante, Storage) funcionais. Middleware protege `(app)` (sem sessão → `/login`). Distinguir o **role super-admin** (Niraslab) que entra em `(admin)` e não é tenant.
 
 **DoD:**
-- [ ] ⏳ Criar conta → tenant → Dashboard; logout; super-admin acede `(admin)`, tenant não
-- [ ] ⏳ Definições: editar nome/logo/cores (Storage)
-- [ ] `currentTenant()` resolve pela sessão; `(app)` bloqueado sem login
-- [ ] Commit `feat(auth): signup, login, tenant onboarding shell + roles`
+- [X] ⏳ Criar conta → tenant → Dashboard; logout; super-admin acede `(admin)`, tenant não
+- [X] ⏳ Definições: editar nome/logo/cores (Storage)
+- [X] `currentTenant()` resolve pela sessão; `(app)` bloqueado sem login
+- [X] Commit `feat(auth): signup, login, tenant onboarding shell + roles`
 
 ### M0.4 🔴 Integrações — hub de tags & chaves + seleção de gateway (DESDE O INÍCIO)
 
@@ -69,10 +69,10 @@ Integrações para colar tags e chaves; e o funil (landing→signup) já é medi
 > Lê o `CLAUDE.md` (secção 18). Migration `0002`: colunas em `platform_settings` para **(A) IDs públicos** (`gtm_container_id`, `meta_pixel_id`, `ga4_measurement_id`, `gads_conversion_id`, `gads_conversion_label`) e **(B) segredos** (`meta_capi_token`, `gads_developer_token`, `zumbopay_api_key/webhook_secret/wallet_id/merchant_id`, `paysuite_api_key/webhook_secret`, `resend_api_key`) + seleção de gateway (`subscription_provider` default `zumbopay`, `credits_provider` default `paysuite`). Tab `(admin)/integracoes` (owner only): inputs com link "onde encontrar", **segredos mascarados** (`••••1234` + "Substituir"), **selectores** do gateway ativo, **botão "Testar ligação"** (server-side, sem expor segredo), **preview do `dataLayer`**. RPC `get_public_tracking()` (anon, SECURITY DEFINER) devolve **só** os campos (A), colunas explícitas (nunca `select *`). **Segredos (B) cifrados via Supabase Vault** (nunca texto puro); leitura só server-side. `getProvider(purpose)` em `packages/payments` lê `platform_settings`→`.env`. Testes: `get_public_tracking` nunca devolve um campo (B); `getProvider` respeita a seleção do painel e cai no `.env` quando vazio.
 
 **DoD:**
-- [ ] Niraslab cola IDs **e** chaves (Zumbo/Paysuite/Resend/tracking) na tab Integrações; escolhe gateway por finalidade
-- [ ] ⏳ `get_public_tracking()` devolve só (A); **nenhum** segredo (B) sai em RPC anon (teste escrito; requer `supabase start`)
-- [ ] Segredos (B) cifrados no Vault, mascarados na UI (`••••1234`); "Testar ligação" valida sem expor; `getProvider` segue a seleção
-- [ ] Commit `feat(admin): integrations hub — tracking tags + gateway keys (Vault) + provider selection`
+- [x] Niraslab cola IDs **e** chaves (Zumbo/Paysuite/Resend/tracking) na tab Integrações; escolhe gateway por finalidade
+- [x] ⏳ `get_public_tracking()` devolve só (A); **nenhum** segredo (B) sai em RPC anon (teste escrito; requer `supabase start`)
+- [x] Segredos (B) cifrados no Vault, mascarados na UI (`••••1234`); "Testar ligação" valida sem expor; `getProvider` segue a seleção
+- [x] Commit `feat(admin): integrations hub — tracking tags + gateway keys (Vault) + provider selection`
 
 ### M0.5 🟡 Módulo de tracking + consentimento + topo do funil
 
@@ -80,10 +80,10 @@ Integrações para colar tags e chaves; e o funil (landing→signup) já é medi
 > Lê o `CLAUDE.md` (secções 19.1–19.4). Cria `apps/web/lib/analytics/track.ts` (ÚNICO lugar com `dataLayer`/`fbq`/`gtag`): `loadGTM`, `trackViewLanding`, `trackViewPricing`, `trackSignUp`, `trackBeginCheckout`, `trackAddPaymentInfo` (+ `trackSubscribe`/`trackPurchase` usados na M3). Banner de consentimento PT (cookie `dl_consent`): GTM/Pixel/Ads só após "Aceitar"; carrega os IDs (A) via `get_public_tracking()`. Migration `0003`: `marketing_events` (append-only). Rota `POST /api/track` (Zod + `session_id` cookie 1st-party + `tenant_id` se autenticado; insere via service role, anon nunca direto). Instrumenta `(marketing)`: `view_landing`, `view_pricing`, `sign_up`, `begin_checkout`. NENHUM componente chama `fbq`/`gtag` direto. Testes: sem consentimento não carrega script; anon não insere em `marketing_events` direto; eventos disparam nos gatilhos certos.
 
 **DoD:**
-- [ ] Eventos de topo de funil disparam (`view_landing`/`view_pricing`/`sign_up`/`begin_checkout`); só via `track*()`
-- [ ] Sem `dl_consent` → não carrega GTM/Pixel/Ads; IDs vêm de `get_public_tracking()`
-- [ ] ⏳ `marketing_events` só via `/api/track` (service role); anon não insere direto
-- [ ] Commit `feat(web): tracking module + consent + top-funnel events`
+- [x] Eventos de topo de funil disparam (`view_landing`/`view_pricing`/`sign_up`/`begin_checkout`); só via `track*()`
+- [x] Sem `dl_consent` → não carrega GTM/Pixel/Ads; IDs vêm de `get_public_tracking()`
+- [x] ⏳ `marketing_events` só via `/api/track` (service role); anon não insere direto
+- [x] Commit `feat(web): tracking module + consent + top-funnel events`
 
 🎉 **CHECKPOINT 1: multi-tenant + auth + Integrações + funil medido. Base pronta — já mede aquisição desde o dia 1.**
 
