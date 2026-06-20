@@ -1481,7 +1481,7 @@ function getWeekOfMonth(date: Date): number {
  * @param timezone - Timezone (ex: 'Africa/Maputo')
  * @returns Data/hora em UTC
  */
-function localHourToUTC(localDate: Date, hour: number, timezone: string): Date {
+export function localHourToUTC(localDate: Date, hour: number, timezone: string): Date {
   // DECISÃO: usa Intl para obter a data local no timezone correto (nunca sistema do SO)
   // Passo 1: obter YYYY-MM-DD no timezone do restaurante
   const dateParts = new Intl.DateTimeFormat('en-US', {

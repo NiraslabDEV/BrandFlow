@@ -121,9 +121,9 @@ Integrações para colar tags e chaves; e o funil (landing→signup) já é medi
 > Lê o `CLAUDE.md` (secções 5, 10). Tab **Stories**: matriz do dia (9 slots) com horário, título, instrução, estado; botão **"Feito"** → RPC `mark_story_done(p_task_id)` (valida tenant). Vista semana. **Dashboard**: "stories de hoje" (X/9 feitos), "campanha ativa" (placeholder até M2), "créditos" (placeholder até M4), atalho "ver stories de agora". TanStack Query.
 
 **DoD:**
-- [ ] ⏳ Stories do dia com instrução; "Feito" marca `done` e atualiza dashboard
-- [ ] ⏳ Vista semana mostra a rotação; estados corretos
-- [ ] Commit `feat(app): stories tab + done tracking + dashboard`
+- [x] ⏳ Stories do dia com instrução; "Feito" marca `done` e atualiza dashboard (RPC `mark_story_done` testada em runtime; UI TanStack Query — verificação no browser manual)
+- [x] ⏳ Vista semana mostra a rotação; estados corretos (próximos 7 dias agrupados por dia no fuso do restaurante)
+- [x] Commit `feat(app): stories tab + done tracking + dashboard`
 
 🎉 **CHECKPOINT 2: o produto entrega o valor central — alerta no celular + execução. Dá para mostrar/vender. Marcar conversas ANTES de continuar.**
 

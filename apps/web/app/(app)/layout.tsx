@@ -4,6 +4,7 @@
 import { redirect } from 'next/navigation'
 import { currentTenant } from '@/lib/tenant'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { Providers } from './providers'
 
 export default async function AppLayout({
   children,
@@ -34,13 +35,13 @@ export default async function AppLayout({
           </div>
           
           <nav className="px-4 space-y-1">
-            <NavItem href="/app/dashboard" icon="📊" label="Dashboard" />
-            <NavItem href="/app/stories" icon="📱" label="Stories" disabled />
-            <NavItem href="/app/calendar" icon="📅" label="Calendário" disabled />
-            <NavItem href="/app/campaigns" icon="📢" label="Campanhas" disabled />
-            <NavItem href="/app/studio" icon="🤖" label="Estúdio IA" disabled />
-            <NavItem href="/app/credits" icon="💰" label="Créditos" disabled />
-            <NavItem href="/app/settings" icon="⚙️" label="Definições" />
+            <NavItem href="/dashboard" icon="📊" label="Dashboard" />
+            <NavItem href="/stories" icon="📱" label="Stories" />
+            <NavItem href="/calendar" icon="📅" label="Calendário" disabled />
+            <NavItem href="/campaigns" icon="📢" label="Campanhas" disabled />
+            <NavItem href="/studio" icon="🤖" label="Estúdio IA" disabled />
+            <NavItem href="/credits" icon="💰" label="Créditos" disabled />
+            <NavItem href="/settings" icon="⚙️" label="Definições" />
           </nav>
           
           <div className="absolute bottom-0 w-64 p-4 border-t border-gray-200">
@@ -50,7 +51,7 @@ export default async function AppLayout({
         
         {/* Main content */}
         <main className="flex-1 overflow-y-auto">
-          {children}
+          <Providers>{children}</Providers>
         </main>
       </div>
     </div>

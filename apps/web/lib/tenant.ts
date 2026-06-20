@@ -37,6 +37,33 @@ export async function currentTenant(): Promise<Tenant | null> {
   return tenant as Tenant
 }
 
+export interface Restaurant {
+  id: string
+  tenant_id: string
+  name: string
+  slug: string
+  open_hour: number
+  close_hour: number
+  timezone: string
+}
+
+// Restaurante do tenant da sessão (MVP: 1 restaurante por tenant). RLS isola.
+export async function currentRestaurant(): Promise<Restaurant | null> {
+  const supabase = createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return null
+
+  const { data } = await supabase
+    .from('restaurants')
+    .select('id, tenant_id, name, slug, open_hour, close_hour, timezone')
+    .is('deleted_at', null)
+    .order('created_at', { ascending: true })
+    .limit(1)
+    .maybeSingle()
+
+  return (data as Restaurant) ?? null
+}
+
 export async function isSuperAdmin(): Promise<boolean> {
   const supabase = createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()

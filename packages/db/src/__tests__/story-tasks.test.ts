@@ -133,4 +133,38 @@ describe('materialize_story_tasks', () => {
     await serviceClient.from('tenants').delete().eq('id', otherTenant as string);
     await cleanupUser(otherEmail);
   }, 30000);
+
+  it('mark_story_done marca done + done_at (próprio tenant)', async () => {
+    const { data: task } = await client
+      .from('story_tasks').select('id').eq('restaurant_id', restaurant.id).limit(1).single();
+    const taskId = (task as { id: string }).id;
+
+    const { error } = await client.rpc('mark_story_done', { p_task_id: taskId });
+    expect(error).toBeNull();
+
+    const { data: after } = await client
+      .from('story_tasks').select('status, done_at').eq('id', taskId).single();
+    expect(after!.status).toBe('done');
+    expect(after!.done_at).not.toBeNull();
+  });
+
+  it('mark_story_done de outro tenant é negado', async () => {
+    const { data: task } = await serviceClient
+      .from('story_tasks').select('id').eq('restaurant_id', restaurant.id).limit(1).single();
+
+    const otherEmail = `done-other-${ts}@test.brandflow.test`;
+    const otherClient = await signUpUser(otherEmail, 'Test1234!');
+    const { data: { user: otherUser } } = await otherClient.auth.getUser();
+    const { data: otherTenant } = await serviceClient.rpc('create_tenant', {
+      p_name: 'Outro Done', p_user_id: otherUser!.id,
+    });
+
+    const { error } = await otherClient.rpc('mark_story_done', {
+      p_task_id: (task as { id: string }).id,
+    });
+    expect(error).not.toBeNull();
+
+    await serviceClient.from('tenants').delete().eq('id', otherTenant as string);
+    await cleanupUser(otherEmail);
+  }, 30000);
 });

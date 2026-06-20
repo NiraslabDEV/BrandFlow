@@ -34,13 +34,13 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/admin')) {
     if (!user) return NextResponse.redirect(new URL('/login', request.url))
     if (user.app_metadata?.role !== 'super_admin')
-      return NextResponse.redirect(new URL('/app/dashboard', request.url))
+      return NextResponse.redirect(new URL('/dashboard', request.url))
     return supabaseResponse
   }
 
   // Já autenticado a tentar aceder a /login ou /signup → redireciona
   if (user && (pathname === '/login' || pathname === '/signup')) {
-    return NextResponse.redirect(new URL('/app/dashboard', request.url))
+    return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
   return supabaseResponse

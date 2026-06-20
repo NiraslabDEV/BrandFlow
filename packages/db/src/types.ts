@@ -511,6 +511,7 @@ export type Database = {
         Returns: number
       }
       get_public_tracking: { Args: never; Returns: Json }
+      mark_story_done: { Args: { p_task_id: string }; Returns: undefined }
       materialize_story_tasks: {
         Args: { p_restaurant_id: string; p_tasks: Json }
         Returns: number
